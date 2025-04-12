@@ -24,7 +24,8 @@ class MegaDebrid:
         try:
             response = requests.get(self.API_URL, params=params)
             self.logger.debug(f"Response status code: {response.status_code}")
-            
+            self.logger.debug(f"Response: {response.text}")
+            response.raise_for_status()
             response_json = response.json()
             self.logger.debug(f"Response JSON: {response_json}")
             
