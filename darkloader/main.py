@@ -14,7 +14,8 @@ from urllib.parse import unquote, urlparse
 from typing import Union
 from darkloader.debrid.mega_debrid import MegaDebrid
 from darkloader.logger import setup_logger
-
+from dotenv import load_dotenv
+load_dotenv()
 def sanitaze_name(filename):
     # Caso 1: Renombrar archivos con '--7_' al final
     if re.search(r'--7_\.', filename):
@@ -321,6 +322,15 @@ class LinkResolver:
                 self.logger.debug("Processing desiupload.co URL")
                 return desiupload.get_direct_link(url)
             case domain if domain in self.hosts_to_debrid:
+                def is_running_in_colab():
+                    # check if importlib is available
+                    import importlib
+                    return importlib.util.find_spec("google.colab") is not None
+                if is_running_in_colab():
+                    self.logger.debug("Running in Colab")
+                    link_unmasked = get_unmasked_link(url)
+                    self.logger.debug(f"Link unmasked: {link_unmasked}")
+                    return link_unmasked, get_filename_from_url(link_unmasked), self.DEFAULT_HEADERS, None
                 self.logger.debug(f"Processing {domain} URL with debrid")
                 direct_link = self.debrid.get_debrid_link(url)
                 filename = get_filename_from_url(direct_link)
@@ -346,6 +356,34 @@ class LinkResolver:
         filename = Path(urlparse(url).path).name or "unknown_file"
         self.logger.debug(f"Extracted oshi.at filename: {filename}")
         return filename
+
+def get_unmasked_link(url):
+    """
+    Obtiene el link desenmascarado del servidor MegaDebrid.
+    
+    Args:
+        url (str): URL de Mega a desenmascarar
+        
+    Returns:
+        str: URL desenmascarada o None si hay error
+    """
+    try:
+        API_URL_MEGA_DEBRID = os.getenv("API_URL_MEGA_DEBRID")
+        if not API_URL_MEGA_DEBRID:
+            raise Exception("API_URL_MEGA_DEBRID is not set")
+        server_url = f"{API_URL_MEGA_DEBRID}/unmask"
+        response = requests.post(
+            server_url,
+            json={"url": url}
+        )
+        response.raise_for_status()
+        if response.status_code == 200:
+            return response.json()["unmasked_url"]
+        else:
+            raise(f"Error al desenmascarar URL: {response.json()}")
+            
+    except Exception as e:
+        raise
 
 
 class DarkLoader:

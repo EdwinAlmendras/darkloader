@@ -1,7 +1,7 @@
 import requests
 from darkloader.logger import setup_logger
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 load_dotenv()
 
 USERNAME = os.getenv("MEGA_DEBRID_USERNAME")
