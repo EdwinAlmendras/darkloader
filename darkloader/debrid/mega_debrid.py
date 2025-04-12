@@ -1,13 +1,13 @@
 import requests
+import os
 
 class MegaDebrid:
     API_URL = "https://www.mega-debrid.eu/api.php"
-    TOKEN = "e4e21e263a8daf95b490e58226b1e91b"
-    USERNAME = "Gxldxm"
-    PASSWORD = "GxldxmGxldxm"
+    USERNAME = os.getenv("MEGA_DEBRID_USERNAME")
+    PASSWORD = os.getenv("MEGA_DEBRID_PASSWORD")
 
-    def __init__(self, token: str = TOKEN):
-        self.token = token
+    def __init__(self):
+        self.token = None
 
     def get_token(self) -> str:
         params = {"action": "connectUser", "login": self.USERNAME, "password": self.PASSWORD}
