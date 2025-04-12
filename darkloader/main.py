@@ -248,7 +248,6 @@ class LinkResolver:
         self.logger = setup_logger("LinkResolver", log_level)
         self.gofile_client = gofile.Client()
         self.debrid = MegaDebrid("DEBUG")
-        self.debrid.get_token()
         self.hosts_to_debrid = ["rapidgator.net", "1fichier.com"]
         
     def get_filename(self, url: str) -> str:

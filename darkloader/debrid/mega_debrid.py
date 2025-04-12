@@ -6,15 +6,16 @@ load_dotenv()
 
 USERNAME = os.getenv("MEGA_DEBRID_USERNAME")
 PASSWORD = os.getenv("MEGA_DEBRID_PASSWORD")
+TOKEN = os.getenv("MEGA_DEBRID_TOKEN")
     
 class MegaDebrid:
     API_URL = "https://www.mega-debrid.eu/api.php"
     def __init__(self, log_level="INFO"):
-        self.token = None
         self.logger = setup_logger("MegaDebrid", log_level)
         self.logger.debug("MegaDebrid instance initialized")
         self.USERNAME = USERNAME
         self.PASSWORD = PASSWORD
+        self.token = TOKEN
 
     def get_token(self) -> str:
         self.logger.debug(f"Getting token with username: {self.USERNAME}")
