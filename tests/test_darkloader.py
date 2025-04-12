@@ -5,7 +5,7 @@ import os
 import tempfile
 from unittest.mock import patch, MagicMock, AsyncMock
 
-from darkloader.darkloader import (
+from darkloader.main import (
     DarkLoader,
     FileDownloader,
     LinkResolver,

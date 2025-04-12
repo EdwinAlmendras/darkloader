@@ -2,7 +2,7 @@ import re
 class UnsupportedServiceError(Exception):
     pass
 def get_direct_link(link):
-    from darkloader.darkloader import get_filename_from_url
+    from darkloader.main import get_filename_from_url
     match = re.search(r"/u/([a-zA-Z0-9]+)", link)
     if match:
         file_id = match.group(1)
@@ -14,7 +14,7 @@ def get_direct_link(link):
     raise UnsupportedServiceError("Invalid Pixeldrain link")
 
 def get_filename(link):
-    from darkloader.darkloader import get_filename_from_url
+    from darkloader.main import get_filename_from_url
     match = re.search(r"/u/([a-zA-Z0-9]+)", link)
     if match:
         file_id = match.group(1)

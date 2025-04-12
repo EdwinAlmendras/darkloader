@@ -84,7 +84,7 @@ class BaseDownloader:
     def __init__(
         self, 
         download_dir: str = "downloads",
-        log_level: str = "DEBUG"
+        log_level: str = "INFO",
     ) -> None:
         self.download_dir = Path(download_dir)
         self._ensure_download_directory()
@@ -247,7 +247,7 @@ class LinkResolver:
     def __init__(self, log_level: str = "DEBUG"):
         self.logger = setup_logger("LinkResolver", log_level)
         self.gofile_client = gofile.Client()
-        self.debrid = MegaDebrid()
+        self.debrid = MegaDebrid("DEBUG")
         self.debrid.get_token()
         self.hosts_to_debrid = ["rapidgator.net", "1fichier.com"]
         
@@ -410,4 +410,4 @@ class DarkLoader:
         return output_path
 
 
-# External module imports
+print("Running DarkLoader example")
